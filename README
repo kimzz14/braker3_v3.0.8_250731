@@ -34,7 +34,7 @@ ext_modules = cythonize(ext_modules),       ==>        ext_modules = cythonize(e
 vi cupcake/tofu/branch/c_branch.pyx
 ctypedef np.int_t DTYPE_t             ==> ctypedef np.int DTYPE_t
 
-find . -name "*.py" -exec sed -i 's/\bnp\.int\b/np.int64/g' {} +
+find . -name "*.py*" -exec sed -i 's/\bnp\.int\b/np.int64/g' {} +
 
 
 vi ../etc/conda/activate.d/export_path.sh
