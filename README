@@ -27,11 +27,14 @@ git clone https://github.com/Magdoll/cDNA_Cupcake.git
 cd cDNA_Cupcake
 
 vi setup.py
+'sklearn'       ==>        'scikit-learn'
+
 ext_modules = cythonize(ext_modules),       ==>        ext_modules = cythonize(ext_modules, language_level = "2"),
 
 vi cupcake/tofu/branch/c_branch.pyx
 ctypedef np.int_t DTYPE_t             ==> ctypedef np.int DTYPE_t
 
+find . -name "*.py" -exec sed -i 's/\bnp\.int\b/np.int64/g' {} +
 
 
 vi ../etc/conda/activate.d/export_path.sh
