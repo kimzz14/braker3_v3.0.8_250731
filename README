@@ -1,5 +1,5 @@
 ###################################################################################
-conda create -n braker3_v3.0.8_250731 braker3 hisat2 sra-tools bedtools gffread stringtie
+conda create -n braker3_v3.0.8_250731 braker3 hisat2 sra-tools bedtools gffread stringtie minimap2 cdna_cupcake
 #bioconda/noarch::braker3-3.0.8-hdfd78af_0
 #bioconda/linux-64::augustus-3.5.0-pl5321h57ba348_8
 #bioconda/linux-64::hisat2-2.2.1-h503566f_8
@@ -10,6 +10,7 @@ conda create -n braker3_v3.0.8_250731 braker3 hisat2 sra-tools bedtools gffread 
 #bioconda/linux-64::bedtools-2.31.1-h13024bc_3
 #bioconda/linux-64::gffread-0.12.7-h077b44d_6
 #bioconda/linux-64::stringtie-3.0.0-h29c0135_0
+#bioconda/linux-64::minimap2-2.30-h577a1d6_0
 
 ###################################################################################
 source activate braker3_v3.0.8_250731
@@ -17,14 +18,31 @@ source activate braker3_v3.0.8_250731
 cd /home/kimzz14/program/anaconda3/envs/braker3_v3.0.8_250731/share
 
 git clone https://github.com/gatech-genemark/GeneMark-ETP.git
+vi share/GeneMark-ETP/bin/gmes/ProtHint/bin/prothint.py
+--binary-files=text
 
-vi /home/kimzz14/program/anaconda3/envs/braker3_v3.0.8_250731/etc/conda/activate.d/export_path.sh
+git clone https://github.com/Gaius-Augustus/TSEBRA
+
+git clone https://github.com/Magdoll/cDNA_Cupcake.git
+cd cDNA_Cupcake
+
+vi setup.py
+ext_modules = cythonize(ext_modules),       ==>        ext_modules = cythonize(ext_modules, language_level = "2"),
+
+vi cupcake/tofu/branch/c_branch.pyx
+ctypedef np.int_t DTYPE_t             ==> ctypedef np.int DTYPE_t
+
+
+
+vi ../etc/conda/activate.d/export_path.sh
 export GENEMARK_PATH=/home/kimzz14/program/anaconda3/envs/braker3_v3.0.8_250731/share/GeneMark-ETP/bin
 export PROTHINT_PATH=/home/kimzz14/program/anaconda3/envs/braker3_v3.0.8_250731/share/GeneMark-ETP/bin/gmes/ProtHint/bin
+export   TSEBRA_PATH=/home/kimzz14/program/anaconda3/envs/braker3_v3.0.8_250731/share/TSEBRA/bin
 
-vi /home/kimzz14/program/anaconda3/envs/braker3_v3.0.8_250731/etc/conda/deactivate.d/export_path.sh
+vi ../etc/conda/deactivate.d/export_path.sh
 unset GENEMARK_PATH
 unset PROTHINT_PATH
+unset   TSEBRA_PATH
 
 ###################################################################################
 cpan install Math::Utils
